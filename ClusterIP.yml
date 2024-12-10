@@ -4,6 +4,9 @@ metadata:
   name: my-cluster-ip
 spec:
   type: ClusterIP
+  selector:
+    matchLabels:
+      app: test
   ports:
     - name: http
       port: 30000
