@@ -1,0 +1,29 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: node-aff-deployment
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: new-nginx
+  
+  template: 
+    metadata:
+      labels: 
+        app: new-nginx
+    spec:
+      affinity:
+        nodeAffinity:
+          requiredDuringSchedulingIgnoredDuringExecution:
+            nodeSelectorTerms:
+            - matchExpressions:
+                - key: desc 
+                  operator: In 
+                  values:
+                  - node1
+      containers:
+      - name: node-aff-cont
+        image: nginx:latest
+        ports:
+        - containerPort: 80         

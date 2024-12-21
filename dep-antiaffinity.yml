@@ -1,0 +1,29 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: dep-antiaffinity
+spec: 
+  replicas: 3
+  selector:
+    matchLabels:
+      app: new-nginx
+  template:
+    metadata:
+      labels:
+        app: new-nginx
+    spec:
+      affinity:
+        podAntiAffinity:
+          requiredDuringSchedulingIgnoredDuringExecution:
+          - labelSelector:
+              matchExpressions:
+              - key: app
+                operator: In 
+                values:
+                - new-nginx
+            topologyKey: "kubernetes.io/hostname"
+      containers:
+      - name: anti-aff-cont
+        image: nginx
+        ports:
+        - containerPort: 80
